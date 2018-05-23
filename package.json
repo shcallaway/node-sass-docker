@@ -1,5 +1,5 @@
 {
-  "name": "node-sass-test",
+  "name": "node-sass-docker-bug",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
