@@ -9,14 +9,12 @@ Node Sass could not find a binding for your current environment: Linux 64-bit wi
 
 It occurs when node-sass cannot locate the binary for the current architecture. You may have experienced it when mounting node_modules into a container filesystem If the host is running a different operating system than the container, node-sass will not have the correct binding for the container architecture. For example, you might install node-sass on your macOS laptop for development, and mount your node_modules into a Linux container (using docker-compose [volumes](https://docs.docker.com/storage/volumes/)) at runtime.
 
-## Reprode
+## Reproduce
 
-###  Requirements
+You will need the following:
 
 * Docker
 * NPM or Yarn
-
-### Steps
 
 1. Run `yarn` or `npm i` to install the dependencies.
 2. Run `./start.sh`. This will create a container that includes Node, as well as everything from the current filesystem. Furthermore, it will attempt to run `node /start.js` within the newly created container.
