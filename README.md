@@ -1,15 +1,22 @@
-# Node-Sass Docker Bug
+# Node-Sass Error in Docker
 
-> Node Sass could not find a binding for your current environment
+In this project I reproduce the following node-sass error:
 
-This reproduces a bug where, when running inside a container, node-sass cannot find the correct binding for the container architecture. The bug is especially problematic when the Dockerfile adds node_modules directly to the container filesystem (as it does here), or when node_modules are being mounted into the filesystem with docker-compose. It is caused by the fact that you are attempting to use the node-sass binary for macOS within a Linux environment.
+```
+Error: Missing binding /node_modules/node-sass/vendor/linux-x64-57/binding.node
+Node Sass could not find a binding for your current environment: Linux 64-bit with Node.js 8.x
+```
 
-## Requirements
+It occurs when node-sass cannot locate the binary for the current architecture. You may have experienced it when mounting node_modules into a container filesystem If the host is running a different operating system than the container, node-sass will not have the correct binding for the container architecture. For example, you might install node-sass on your macOS laptop for development, and mount your node_modules into a Linux container (using docker-compose [volumes](https://docs.docker.com/storage/volumes/)) at runtime.
+
+## Reprode
+
+###  Requirements
 
 * Docker
 * NPM or Yarn
 
-## Repro Steps
+### Steps
 
 1. Run `yarn` or `npm i` to install the dependencies.
 2. Run `./start.sh`. This will create a container that includes Node, as well as everything from the current filesystem. Furthermore, it will attempt to run `node /start.js` within the newly created container.
@@ -41,8 +48,4 @@ Run `npm rebuild node-sass --force` to build the binding for your current enviro
     at Object.<anonymous> (/start.js:1:80)
 ```
 
-Note that it found bindings for macOS!
-
-## Proposed Fix
-
-WIP
+Note that this will only work if your current operating system differs from the container operating system as defined in the Dockerfile!
